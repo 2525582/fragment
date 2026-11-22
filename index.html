@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FRAGMENT — 残像の欠片</title>
-<meta name="description" content="CHARACTER ARCHIVE — AFTERIMAGE に繋がる、廃れたアーカイブの探索記録。">
-<link rel="stylesheet" href="style.css?v=2">
+<meta name="description" content="CHARACTER ARCHIVE — AFTERIMAGE に繋がる、本格謎解き。手がかりは、あらゆる場所に隠されている。">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <canvas id="dustCanvas" aria-hidden="true"></canvas>
@@ -15,7 +15,7 @@
   <header class="topbar">
     <a class="brand" href="#" id="brandHome">FRAGMENT<span>残像の欠片</span></a>
     <div class="top-status">
-      <span class="frag-count" id="fragCount">FRAGMENTS 0 / 12</span>
+      <span class="frag-count" id="fragCount">SOLVED 0 / 6</span>
       <a class="to-archive" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">TO ARCHIVE</a>
     </div>
   </header>
@@ -23,74 +23,59 @@
   <main>
     <!-- ===== INTRO ===== -->
     <section class="screen is-active" id="introScreen">
-      <p class="intro-kicker">A RUINED ARCHIVE — EXPLORATION RECORD</p>
+      <p class="intro-kicker">A RUINED ARCHIVE — REAL PUZZLE HUNT</p>
       <h1 class="intro-title">FRAG<em>MENT</em></h1>
-      <p class="intro-sub">残像の欠片 — 廃れたアーカイブの探索記録</p>
+      <p class="intro-sub">残像の欠片 — 本格謎解き</p>
 
       <div class="notice">
         <h2>はじめに</h2>
-        <p class="warn-line">WARNING — 先に本編の記録を読むことを推奨する。</p>
-        <p>この場所は、記録サイト「CHARACTER ARCHIVE — AFTERIMAGE」と繋がる、崩れかけたもうひとつのアーカイブです。ここに残された物語は、双子の姉妹——アルマとノエルについてのものです。</p>
-        <p>まだ本編の記録に目を通していない方は、先にそちらを閲覧してください。彼女たちの名前も、蝶のことも、3年前に何があったのかも、すべてあちらに記録されています。</p>
+        <p class="warn-line">WARNING — 先に本編の記録を読むことを強く推奨する。</p>
+        <p>これは、記録サイト「CHARACTER ARCHIVE — AFTERIMAGE」と繋がる謎解きです。ここにある問いの答えは、このページの中にはありません。</p>
+        <p>手がかりは、本編のサイトのあらゆる場所——プロフィール、セリフ集、画廊、世界観、概要、そしてこの廃墟の設計図（GitHub）にまで隠されています。行って、見て、数えて、導き出してください。</p>
+        <p>物語は、双子の姉妹——アルマとノエルについて。謎を1つ解くごとに、彼女たちの記録が1つ復元されます。6つの謎をすべて解いた者だけが、最後の鍵に辿り着けます。</p>
         <p><a class="archive-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">CHARACTER ARCHIVE — AFTERIMAGE を開く</a></p>
-        <p class="notice-small">探索は自動で記録されます。途中で離れても、集めた欠片は消えません。</p>
+        <p class="notice-small">進行状況は自動で記録されます。各ファイルには段階ヒントがあります（詰まったら開いてください）。</p>
       </div>
 
-      <button class="enter-button" id="enterButton" type="button">探索をはじめる<span>ENTER THE RUINS</span></button>
-      <p class="intro-foot">SOMEWHERE IN THE RUINS, SHE IS STILL HERE.</p>
+      <button class="enter-button" id="enterButton" type="button">調査をはじめる<span>BEGIN THE HUNT</span></button>
+      <p class="intro-foot">THE ANSWERS ARE NOT HERE. THEY ARE EVERYWHERE.</p>
     </section>
 
-    <!-- ===== MAP ===== -->
-    <section class="screen" id="mapScreen" aria-hidden="true">
+    <!-- ===== BOARD ===== -->
+    <section class="screen" id="boardScreen" aria-hidden="true">
       <div class="section-heading">
-        <div><p class="eyebrow"><span class="eyebrow-line"></span> RUIN MAP</p><h2>廃墟の<em>地図</em></h2></div>
-        <p class="section-note">AREAS<br><span>探索できる場所</span></p>
+        <div><p class="eyebrow"><span class="eyebrow-line"></span> CASE FILES</p><h2>調査<em>ファイル</em></h2></div>
+        <p class="section-note">6 FILES + FINAL<br><span>謎は本編の中に</span></p>
       </div>
-      <p class="map-lead">崩れたアーカイブの中を歩き、残された欠片を集めてください。場所によっては、鍵や合言葉が必要な所があります。集めた欠片：<b id="mapFragCount">0 / 12</b></p>
-      <div class="area-list" id="areaList"></div>
-      <div class="map-actions">
-        <button class="ghost-button" id="resetButton" type="button">探索記録をリセット</button>
-        <a class="ghost-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">本編の記録へ — AFTERIMAGE</a>
-      </div>
-      <footer class="screen-footer"><span>FRAGMENT</span><span>END OF MAP</span></footer>
-    </section>
+      <p class="map-lead">各ファイルの問いに答えると、導出文字が1つ手に入り、物語が1つ復元されます。答えはすべて、本編「AFTERIMAGE」とその周辺から導き出せます。</p>
+      <div class="file-list" id="fileList"></div>
 
-    <!-- ===== AREA ===== -->
-    <section class="screen" id="areaScreen" aria-hidden="true">
-      <button class="back-button" id="areaBack" type="button">← 地図に戻る</button>
-      <div class="section-heading">
-        <div><p class="eyebrow"><span class="eyebrow-line"></span> <span id="areaEyebrow">AREA 01</span></p><h2 id="areaTitle">—</h2></div>
-        <p class="section-note" id="areaNote">—</p>
-      </div>
-      <p class="area-desc" id="areaDesc"></p>
-
-      <div class="gate-box" id="gateBox" hidden>
-        <p class="gate-label">LOCKED — 鍵がかかっている</p>
-        <p class="gate-q" id="gateQ"></p>
-        <div class="gate-form">
-          <input id="gateInput" type="text" placeholder="答えを入力" autocomplete="off" spellcheck="false">
-          <button id="gateButton" type="button">開ける</button>
+      <div class="final-card" id="finalCard">
+        <p class="file-tag">FINAL — 最後の鍵</p>
+        <h3 class="final-title">集めた文字が、言葉になる</h3>
+        <div class="piece-slots" id="pieceSlots"></div>
+        <p class="final-desc">6つの導出文字を、ファイルの順につなげた言葉が最後の鍵です。</p>
+        <div class="gate-form" id="finalForm">
+          <input id="finalInput" type="text" placeholder="最後の鍵を入力" autocomplete="off" spellcheck="false">
+          <button id="finalButton" type="button">開ける</button>
         </div>
-        <p class="gate-msg" id="gateMsg"></p>
+        <p class="gate-msg" id="finalMsg"></p>
+        <button class="sealed-replay" id="replayEnding" type="button" hidden>REPLAY ENDING — エンディングをもう一度見る</button>
       </div>
 
-      <div id="areaBody">
-        <p class="points-label">調べられる場所</p>
-        <div class="point-list" id="pointList"></div>
-        <article class="point-panel" id="pointPanel" hidden>
-          <p class="point-tag" id="pointTag"></p>
-          <h3 id="pointTitle"></h3>
-          <p class="point-body" id="pointBody"></p>
-        </article>
+      <div class="map-actions">
+        <button class="ghost-button" id="resetButton" type="button">調査記録をリセット</button>
+        <a class="ghost-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">本編の記録へ — AFTERIMAGE</a>
+        <a class="ghost-link" href="https://github.com/2525582/fragment" target="_blank" rel="noopener">設計図 — GitHub</a>
       </div>
-      <footer class="screen-footer"><span>FRAGMENT</span><span id="areaFooter">AREA</span></footer>
+      <footer class="screen-footer"><span>FRAGMENT</span><span>END OF FILES</span></footer>
     </section>
   </main>
 
   <!-- ===== ENDING ===== -->
   <div class="ending-overlay" id="endingOverlay" hidden>
     <div class="ending-inner">
-      <p class="ending-kicker">THE DEEPEST — 最奥にて</p>
+      <p class="ending-kicker">FINAL KEY ACCEPTED — 最後の鍵</p>
       <div class="ending-lines">
         <p>「ずっと、探していた。」</p>
         <p>「あなたは、ここにいたのね。」</p>
@@ -104,11 +89,11 @@
       <p class="ending-credit">FRAGMENT — 残像の欠片<br>CREATED BY ぱんだ</p>
       <div class="ending-actions">
         <a class="ending-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">記録の続きは AFTERIMAGE で</a>
-        <button class="ending-close" id="endingClose" type="button">CLOSE — 廃墟に戻る</button>
+        <button class="ending-close" id="endingClose" type="button">CLOSE — 調査に戻る</button>
       </div>
     </div>
   </div>
 
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>

@@ -1,226 +1,196 @@
 "use strict";
 const $ = (s) => document.querySelector(s);
 
-/* ===== story data ===== */
-const AREAS = [
+/* ===== puzzle files ===== */
+const FILES = [
   {
-    id: "entrance", num: "01", name: "崩れた入口", en: "RUINED ENTRANCE",
-    desc: "かつて、記録を守るための場所があった。今は天井が崩れ、光も届かない。足元には瓦礫と、色を失った何かの破片。それでも——ここに残されたものは、まだ消えていない。",
-    points: [
-      { id: "sign", label: "落ちた看板", title: "FRAGMENT 01 — 序文", frag: true,
-        body: "『存在した証は、残像として残り続ける。』\n看板には、そう刻まれていた。文字の半分は欠けている。\nこの場所は、双子の姉妹の記録を守っていたはずだった。姉の名前はアルマ。妹の名前はノエル。\n記録は朽ちても、残像は残る。それを確かめるために、あなたはここへ来た。" },
-      { id: "board", label: "割れた表示板", title: "FRAGMENT 02 — 応答のない記録", frag: true,
-        body: "表示板は割れ、文字がところどころ消えている。\n『04 RECORDS FOUND』\n『01 RECORD UNREACHABLE — 応答なし』\n4つの記録のうち、1つだけが応答をやめたまま。誰の記録なのか、表示板はもう教えてくれない。\nただ、応答がないことと、存在しないことは、違うはずだった。" },
-      { id: "wing", label: "羽の落ちた場所", title: "調査 — 片羽", frag: false,
-        body: "瓦礫の隙間に、蝶の羽が落ちていた。片方だけ。\n色はほとんど抜けているのに、縁のあたりにだけ、鮮やかな黄緑色が残っている。\nこの世界の象徴である「蝶」。その力を分け合った双子の、どちらの羽なのかは分からない。\n——いや、分かる気がした。この色は、姉の色だ。" }
-    ]
+    id: "f1", num: "01", title: "色の鍵", piece: "わ",
+    riddle: "本編の記録で、双子のプロフィールにはテーマカラーが小さく記されている（THEME — #......）。姉と妹、2人の色コードから「数字だけ」を拾い、姉→妹の順に並べよ。",
+    answers: ["69238"],
+    hints: [
+      "本編でアルマとノエルのプロフィールをそれぞれ開いてみて。",
+      "色コードは、プロフィールのセリフの上に小さく「THEME — #」と書かれている。",
+      "姉は #A6D923、妹は #B8CDEB。文字を除いて数字だけを並べると、6・9・2・3・8。"
+    ],
+    rewardTitle: "復元された記録 I — 序文と生成",
+    reward: "『存在した証は、残像として残り続ける。』この場所は、双子の姉妹の記録を守っていた。姉はアルマ、妹はノエル。\n双子は「生成」された存在だった。世界の象徴である蝶の力を、二人で分け合って生まれた。力は一人分。それを二人で分け合う。それが、すべての始まりだった。"
   },
   {
-    id: "archive", num: "02", name: "散らかった記録室", en: "SCATTERED ARCHIVE",
-    desc: "記録の棚は倒れ、紙が床一面に散らばっている。誰かが荒らしたのではなく、時間に崩された部屋。踏むたびに、乾いた音がする。",
-    points: [
-      { id: "gen", label: "生成の記録", title: "FRAGMENT 03 — 生成", frag: true,
-        body: "『双子は「生成」された存在である。世界の象徴である蝶の力を、二人で分け合って生まれた。』\nアルマとノエルは、普通の姉妹ではなかった。生まれた時から、この世界の要である蝶と結ばれていた。\n力は一人分。それを二人で分け合う。\nそれが、すべての始まりだった。" },
-      { id: "child", label: "幼少期の記録", title: "FRAGMENT 04 — 愛されていた頃", frag: true,
-        body: "幼い頃、蝶を生み出す力に優れていたのは、妹のノエルだった。\n彼女の周りにはいつも蝶が舞い、人は彼女を愛した。姉のアルマはいつもその隣にいて、二人は何をするにも一緒だった。\n『穏やかで、何不自由ない日々』——記録にはそうある。\nこの頃の二人の笑い声が、まだ部屋の隅に残っている気がした。" },
-      { id: "memo", label: "小さなメモ", title: "調査 — 誰かのメモ", frag: false,
-        body: "散らばった紙の中に、走り書きのメモがあった。\n『温室の扉は、蝶の力を分け合った人数で開く。数字を入れればいい。』\n誰が書いたのかは分からない。インクは古い。\n——温室は、この先にあるはずだ。" }
-    ]
+    id: "f2", num: "02", title: "声の鍵", piece: "す",
+    riddle: "本編のセリフ集（QUOTES）を開け。登録された4人のセリフの「最初の一文字」（「を除く）を、記録番号の順（001→004）に並べよ。",
+    answers: ["わねこも"],
+    hints: [
+      "セリフ集は、本編のメニューの04番。",
+      "一人目、詩織のセリフは「わ」から始まる。二人目は茨薔薇。",
+      "順に並べると——わ・ね・こ・も。"
+    ],
+    rewardTitle: "復元された記録 II — 愛された頃と、力の差",
+    reward: "幼い頃、蝶を生み出す力に優れていたのは妹のノエルだった。彼女の周りにはいつも蝶が舞い、人は彼女を愛した。姉のアルマはいつもその隣にいた。\nしかし成長するにつれ、力は釣り合いを失っていった。アルマの鱗粉は鮮やかに色づき、ノエルの蝶は透明になっていった。分け合ったはずの力は、いつしか一人に集まっていった。誰のせいでもない。でも、確かに何かが壊れ始めた。"
   },
   {
-    id: "greenhouse", num: "03", name: "枯れた温室", en: "WITHERED GREENHOUSE",
-    gate: { q: "蝶の力を分け合ったのは、何人？（数字で答えてください）", answers: ["2", "２"], msg: "違うようだ。メモの言葉を思い出して。" },
-    desc: "ガラスは割れ、蔓が絡まり、花壇は枯れている。かつて蝶が舞った温室は、今は静まり返っている。それでも土の匂いと、花の気配だけが残っていた。",
-    points: [
-      { id: "flowers", label: "枯れた花壇", title: "FRAGMENT 05 — 花", frag: true,
-        body: "ノエルは花が好きだった。静かな場所と、花と、蝶。\n枯れた花壇の脇に、新しい花が供えられている。こんな廃墟に、誰が——。\n答えは分かっている。アルマだ。彼女は今も、ここに通っている。\n供えられた花だけが、この温室で色を失っていない。" },
-      { id: "scale", label: "色づく鱗粉", title: "FRAGMENT 06 — 力の差", frag: true,
-        body: "ガラスの破片に、鱗粉が付着していた。片方は鮮やかに色づき、片方は透明に近い。\n成長するにつれ、蝶の力は釣り合いを失っていった。アルマの力は異常なほど育ち、ノエルの力は、静かに衰えていった。\n分け合ったはずの力は、いつしか一人に集まっていった。\n誰のせいでもない。でも、確かに何かが壊れ始めた。" },
-      { id: "specimen", label: "標本箱", title: "FRAGMENT 07 — 最後の蝶", frag: true,
-        body: "標本箱の奥に、一匹だけ蝶が収められていた。羽は透明に近く、光に透ける。\nラベルには震えた字で、こう書かれている。\n『ノエルが最後に生んだ蝶。もう飛べないけれど、捨てられなかった。』\n筆跡は、アルマのものだ。\n力が消えていく妹の、最後の証を、姉はこうして残した。" }
-    ]
+    id: "f3", num: "03", title: "番号の鍵", piece: "れ",
+    riddle: "本編のメニューを開け。各画面には番号が振られている。「封印記録の番号 − 手配書の番号 + 世界の番号」を計算せよ。",
+    answers: ["12"],
+    hints: [
+      "本編の右上のMENUを開くと、各画面に番号が見える。",
+      "封印記録は08、手配書は02、世界は06。",
+      "8 − 2 + 6 = ？"
+    ],
+    rewardTitle: "復元された記録 III — 花と、最後の蝶",
+    reward: "ノエルは花が好きだった。静かな場所と、花と、蝶。廃墟の温室には、今も新しい花が供えられている。アルマが通っているのだ。\n標本箱の奥には、一匹の蝶。『ノエルが最後に生んだ蝶。もう飛べないけれど、捨てられなかった。』ラベルは姉の震えた字だった。力が消えていく妹の最後の証を、姉はこうして残した。"
   },
   {
-    id: "room", num: "04", name: "双子の部屋", en: "TWINS' ROOM",
-    desc: "小さな部屋に、ベッドが二つ並んでいる。一方は崩れ、一方は——今も整えられている。誰かが、帰りを待つように。",
-    points: [
-      { id: "beds", label: "二つのベッド", title: "FRAGMENT 08 — 並んで眠った日々", frag: true,
-        body: "幼い頃、二人はいつも並んで眠った。蝶の話、花の話、他愛のない話をして。\n片方のベッドは埃をかぶり、もう片方は綺麗に整えられている。整えられているのは、ノエルのベッドだ。\nアルマは今でも、この部屋を片付け続けている。\n帰るはずのない場所を、帰れる場所のままにするために。" },
-      { id: "distance", label: "遠ざけられた日々", title: "FRAGMENT 09 — 視線", frag: true,
-        body: "ノエルの力が衰えると、周囲は少しずつ彼女を遠ざけるようになった。視線が冷たくなり、声が届かなくなった。\nノエルは感情を表に出すことをやめた。誰かに期待することも、何かを望むことも。\nアルマは、止められなかった。力を持つ者として扱われる自分と、遠ざけられる妹。その間で、伝えるべき言葉を、伝えられなかった。\n引き出しには鍵がかかっている。鍵は——姉が妹に、最後まで伝えられなかった一言。" },
-      { id: "drawer", label: "鍵のかかった引き出し", title: "FRAGMENT 10 — 書きかけの手紙", frag: true,
-        gate: { q: "鍵は、姉が妹に伝えられなかった一言。引き出しに、その言葉を入れてください。", answers: ["すき", "スキ", "好き"], msg: "鍵は開かない。彼女の言葉を、思い出して。" },
-        body: "引き出しの中には、書きかけの手紙が何通も入っていた。全部、同じ書き出し。全部、途中で終わっている。\n『今度こそ、あなたに好きだと伝えたい。』\n強い自分から好意を伝えることが、悔しかった。照れくさかった。プライドが邪魔をした。\nそうして伝えられないまま、3年前の日が来てしまった。\n手紙は、今も宛先を失ったまま、ここで眠っている。" }
-    ]
+    id: "f4", num: "04", title: "印の鍵", piece: "な",
+    riddle: "本編の4つの画面——セリフ集、画廊、世界、概要——の片隅に、小さな数字の「印」が1つずつ刻まれている。印を、メニューの番号順（04→05→06→09）に読め。",
+    answers: ["3142"],
+    hints: [
+      "印は各画面の一番下、フッターの近くにある。とても小さい。",
+      "セリフ集の印は「3」、画廊の印は「1」。",
+      "世界の印は「4」、概要の印は「2」。読む順番はメニューの番号順。"
+    ],
+    rewardTitle: "復元された記録 IV — ベッドと、視線",
+    reward: "双子の部屋には、ベッドが二つ並んでいる。片方は埃をかぶり、ノエルのベッドだけが今も整えられている。帰るはずのない場所を、帰れる場所のままにするために、アルマは片付け続けている。\nノエルの力が衰えると、周囲は彼女を遠ざけるようになった。視線が冷たくなり、声が届かなくなった。アルマは止められなかった。伝えるべき言葉を、伝えられなかった。"
   },
   {
-    id: "stairway", num: "05", name: "止まった階段", en: "STOPPED STAIRWAY",
-    desc: "最奥へ続く階段。途中から先は暗く、空気が冷たい。壁の時計は、針を止めたまま微動だにしない。",
-    points: [
-      { id: "clock", label: "止まった時計", title: "FRAGMENT 11 — 3年前", frag: true,
-        body: "時計は、3年前の日付で止まっている。ノエルが死んだ日だ。\n記録によれば、彼女はもうこの世にいない。蝶の力を失い、周囲から忘れられ、静かに消えていった。\nでも、アルマは受け入れていない。受け入れられるはずがなかった。\n伝えられなかった言葉が一つある限り、彼女の中で時間は、あの日から進んでいない。" },
-      { id: "graffiti", label: "壁の落書き", title: "FRAGMENT 12 — 声", frag: true,
-        body: "階段の壁に、小さな文字が刻まれていた。\n『もう、誰も私を見ていない。』\n誰の字かは分からない。でも、この廃墟を歩いてきたあなたには、もう分かるはずだ。\n——見ている。ずっと、誰かが彼女を見ていた。\n最奥の扉が、かすかに光っている。集めた欠片が、道を示している。" }
-    ]
+    id: "f5", num: "05", title: "好みの鍵", piece: "い",
+    riddle: "本編のプロフィールで、姉妹それぞれの「好きなもの」に挙げられた項目の数を数え、2人の数を掛け算せよ。（項目は「、」で区切られている）",
+    answers: ["25"],
+    hints: [
+      "アルマとノエル、2人のプロフィールの「好きなもの」欄を見る。",
+      "姉の好きなものは5つ。妹は——数えてみて。",
+      "5 × 5 = ？"
+    ],
+    rewardTitle: "復元された記録 V — 書きかけの手紙",
+    reward: "鍵のかかった引き出しの中には、書きかけの手紙が何通も入っていた。全部、同じ書き出し。全部、途中で終わっている。\n『今度こそ、あなたに好きだと伝えたい。』\n強い自分から好意を伝えることが、悔しかった。照れくさかった。プライドが邪魔をした。そうして伝えられないまま、3年前の日が来てしまった。手紙は、今も宛先を失ったまま眠っている。"
   },
   {
-    id: "deepest", num: "06", name: "最奥", en: "THE DEEPEST", deepest: true,
-    desc: "欠片をすべて集めた者だけが辿り着ける、廃墟の最奥。暗闇の中で、透明な羽が、静かに光っていた。",
-    points: []
+    id: "f6", num: "06", title: "設計図の鍵", piece: "で",
+    riddle: "この廃墟の設計図は、GitHubに保管されている。リポジトリ「fragment」を開き、その説明文を読め。最後の問いが、そこに書かれている。",
+    answers: ["ノエル", "のえる", "NOEL"],
+    hints: [
+      "github.com/2525582/fragment を開いて。",
+      "リポジトリの説明文は、ページ右側の「About」欄にある。",
+      "答えは、蝶の力を失い、忘れられた妹の名前。"
+    ],
+    rewardTitle: "復元された記録 VI — 止まった時間と、声",
+    reward: "階段の時計は、3年前の日付で止まっている。ノエルが死んだ日だ。伝えられなかった言葉が一つある限り、アルマの中で時間はあの日から進んでいない。\n壁には小さな文字。『もう、誰も私を見ていない。』\n——見ている。ずっと、誰かが彼女を見ていた。集めた文字が、最後の鍵になる。"
   }
 ];
-const TOTAL_FRAGS = AREAS.reduce((n, a) => n + a.points.filter((p) => p.frag).length, 0);
+const FINAL_ANSWERS = ["わすれないで", "ワスレナイデ"];
 
 /* ===== state ===== */
-const foundSet = new Set(JSON.parse(localStorage.getItem("fragment-found") || "[]"));
-const gatesOpen = new Set(JSON.parse(localStorage.getItem("fragment-gates") || "[]"));
-const seenSet = new Set(JSON.parse(localStorage.getItem("fragment-seen") || "[]"));
+const solvedSet = new Set(JSON.parse(localStorage.getItem("fragment2-solved") || "[]"));
+const hintState = JSON.parse(localStorage.getItem("fragment2-hints") || "{}");
+let finalSolved = localStorage.getItem("fragment2-final") === "1";
 function saveState() {
-  localStorage.setItem("fragment-found", JSON.stringify([...foundSet]));
-  localStorage.setItem("fragment-gates", JSON.stringify([...gatesOpen]));
-  localStorage.setItem("fragment-seen", JSON.stringify([...seenSet]));
+  localStorage.setItem("fragment2-solved", JSON.stringify([...solvedSet]));
+  localStorage.setItem("fragment2-hints", JSON.stringify(hintState));
+  localStorage.setItem("fragment2-final", finalSolved ? "1" : "0");
 }
-function normalizeAnswer(v) { return v.trim().toUpperCase().replace(/[\s　]+/g, ""); }
+function normalize(v) { return v.trim().replace(/[\s　]+/g, ""); }
 
 /* ===== screens ===== */
-const introScreen = $("#introScreen"), mapScreen = $("#mapScreen"), areaScreen = $("#areaScreen");
-let currentArea = null;
+const introScreen = $("#introScreen"), boardScreen = $("#boardScreen");
 function setScreen(target) {
-  [introScreen, mapScreen, areaScreen].forEach((s) => {
+  [introScreen, boardScreen].forEach((s) => {
     const on = s === target;
     s.classList.toggle("is-active", on);
     s.setAttribute("aria-hidden", on ? "false" : "true");
   });
   window.scrollTo({ top: 0 });
 }
-function updateFragCount() {
-  const t = `FRAGMENTS ${foundSet.size} / ${TOTAL_FRAGS}`;
-  $("#fragCount").textContent = t;
-  const m = $("#mapFragCount"); if (m) m.textContent = `${foundSet.size} / ${TOTAL_FRAGS}`;
+function updateCount() {
+  $("#fragCount").textContent = `SOLVED ${solvedSet.size} / ${FILES.length}`;
 }
 
-/* ===== map ===== */
-function renderMap() {
-  const list = $("#areaList");
+/* ===== board ===== */
+function renderBoard() {
+  const list = $("#fileList");
   list.innerHTML = "";
-  AREAS.forEach((area) => {
-    const frags = area.points.filter((p) => p.frag);
-    const got = frags.filter((p) => foundSet.has(p.id)).length;
-    const btn = document.createElement("button");
-    btn.className = "area-card";
-    let status;
-    if (area.deepest) {
-      const ready = foundSet.size >= TOTAL_FRAGS;
-      status = ready ? "扉が開いている" : `封印 — 欠片 ${foundSet.size} / ${TOTAL_FRAGS}`;
-      btn.classList.toggle("is-locked", !ready);
-    } else if (area.gate && !gatesOpen.has(area.id)) {
-      status = "鍵がかかっている";
-      btn.classList.add("is-locked");
-    } else if (frags.length && got === frags.length) {
-      status = "探索完了";
-      btn.classList.add("is-done");
+  FILES.forEach((file) => {
+    const solved = solvedSet.has(file.id);
+    const card = document.createElement("article");
+    card.className = "file-card" + (solved ? " is-solved" : "");
+    const hintsShown = hintState[file.id] || 0;
+    let inner = `
+      <div class="file-head">
+        <span class="file-tag">FILE ${file.num}</span>
+        <h3 class="file-title">${file.title}</h3>
+        <span class="file-status">${solved ? `SOLVED — 導出文字「${file.piece}」` : "未解決"}</span>
+      </div>
+      <p class="file-riddle">${file.riddle}</p>`;
+    if (solved) {
+      inner += `<div class="reward"><p class="reward-tag">STORY RESTORED</p><h4>${file.rewardTitle}</h4><p class="reward-body">${file.reward}</p></div>`;
     } else {
-      status = `欠片 ${got} / ${frags.length}`;
+      inner += `<div class="hint-area">`;
+      for (let i = 0; i < hintsShown; i++) inner += `<p class="hint-line">ヒント${i + 1}：${file.hints[i]}</p>`;
+      inner += `</div>
+      <div class="file-actions">
+        ${hintsShown < file.hints.length ? `<button class="ghost-button" data-hint="${file.id}" type="button">ヒントを見る（${hintsShown} / ${file.hints.length}）</button>` : ""}
+      </div>
+      <div class="gate-form">
+        <input type="text" placeholder="答えを入力" autocomplete="off" spellcheck="false" data-input="${file.id}">
+        <button type="button" data-solve="${file.id}">判定</button>
+      </div>
+      <p class="gate-msg" data-msg="${file.id}"></p>`;
     }
-    btn.innerHTML = `<span class="area-num">AREA ${area.num}</span><span class="area-name">${area.name}<small>${area.en}</small></span><span class="area-status">${status}</span>`;
-    btn.addEventListener("click", () => openArea(area));
-    list.appendChild(btn);
+    card.innerHTML = inner;
+    list.appendChild(card);
   });
-  updateFragCount();
+  list.querySelectorAll("[data-hint]").forEach((btn) => btn.addEventListener("click", () => {
+    const id = btn.getAttribute("data-hint");
+    hintState[id] = Math.min((hintState[id] || 0) + 1, 3);
+    saveState(); renderBoard();
+  }));
+  list.querySelectorAll("[data-solve]").forEach((btn) => btn.addEventListener("click", () => trySolve(btn.getAttribute("data-solve"))));
+  list.querySelectorAll("[data-input]").forEach((inp) => inp.addEventListener("keydown", (e) => { if (e.key === "Enter") trySolve(inp.getAttribute("data-input")); }));
+  renderFinal();
+  updateCount();
 }
-
-/* ===== area ===== */
-function openArea(area) {
-  currentArea = area;
-  if (area.deepest) {
-    if (foundSet.size >= TOTAL_FRAGS) { playEnding(); return; }
-  }
-  $("#areaEyebrow").textContent = `AREA ${area.num} — ${area.en}`;
-  $("#areaTitle").innerHTML = area.name;
-  $("#areaNote").innerHTML = `${area.en}<br><span>欠片 ${area.points.filter((p) => foundSet.has(p.id) && p.frag).length} / ${area.points.filter((p) => p.frag).length}</span>`;
-  $("#areaDesc").textContent = area.desc;
-  $("#areaFooter").textContent = `AREA ${area.num}`;
-  const gateBox = $("#gateBox");
-  const body = $("#areaBody");
-  if (area.gate && !gatesOpen.has(area.id)) {
-    gateBox.hidden = false; body.hidden = true;
-    $("#gateQ").textContent = area.gate.q;
-    $("#gateMsg").textContent = "";
-    $("#gateInput").value = "";
-  } else {
-    gateBox.hidden = true; body.hidden = false;
-    renderPoints(area);
-  }
-  $("#pointPanel").hidden = true;
-  setScreen(areaScreen);
-}
-function renderPoints(area) {
-  const list = $("#pointList");
-  list.innerHTML = "";
-  area.points.forEach((point) => {
-    const btn = document.createElement("button");
-    btn.className = "point-item";
-    const locked = point.gate && !gatesOpen.has(point.id);
-    const found = foundSet.has(point.id);
-    const seen = seenSet.has(point.id);
-    btn.innerHTML = `<span>${point.label}</span><span class="point-state">${locked ? "鍵" : found ? "FOUND" : seen ? "調査済み" : "未調査"}</span>`;
-    if (found || seen) btn.classList.add("is-found");
-    btn.addEventListener("click", () => openPoint(area, point));
-    list.appendChild(btn);
-  });
-}
-function openPoint(area, point) {
-  const panel = $("#pointPanel");
-  if (point.gate && !gatesOpen.has(point.id)) {
-    panel.hidden = false;
-    $("#pointTag").textContent = "LOCKED — 鍵がかかっている";
-    $("#pointTitle").textContent = point.label;
-    $("#pointBody").innerHTML = `${point.gate.q}<br><br><span class="inline-gate"><input id="drawerInput" type="text" placeholder="言葉を入力" autocomplete="off" spellcheck="false"><button id="drawerButton" type="button">開ける</button></span><br><span class="gate-msg" id="drawerMsg"></span>`;
-    const tryDrawer = () => {
-      const v = normalizeAnswer($("#drawerInput").value);
-      const ok = point.gate.answers.some((a) => normalizeAnswer(a) === v);
-      if (ok) { gatesOpen.add(point.id); saveState(); openPoint(area, point); renderPoints(area); }
-      else { $("#drawerMsg").textContent = point.gate.msg; }
-    };
-    $("#drawerButton").addEventListener("click", tryDrawer);
-    $("#drawerInput").addEventListener("keydown", (e) => { if (e.key === "Enter") tryDrawer(); });
-    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    return;
-  }
-  panel.hidden = false;
-  $("#pointTag").textContent = point.frag ? (foundSet.has(point.id) ? "FRAGMENT — 回収済み" : "FRAGMENT — 欠片を回収した") : "INVESTIGATION — 調査記録";
-  $("#pointTitle").textContent = point.title;
-  $("#pointBody").textContent = point.body;
-  if (point.frag && !foundSet.has(point.id)) {
-    foundSet.add(point.id);
+function trySolve(id) {
+  const file = FILES.find((f) => f.id === id);
+  const input = document.querySelector(`[data-input="${id}"]`);
+  const msg = document.querySelector(`[data-msg="${id}"]`);
+  if (!file || !input) return;
+  const v = normalize(input.value);
+  const ok = file.answers.some((a) => normalize(a) === v || normalize(a).toUpperCase() === v.toUpperCase());
+  if (ok) {
+    solvedSet.add(id);
     saveState();
     document.body.classList.add("eroding");
     window.setTimeout(() => document.body.classList.remove("eroding"), 240);
+    renderBoard();
+  } else if (msg) {
+    msg.textContent = "違うようだ。手がかりを、もう一度確かめて。";
   }
-  if (!point.frag && !seenSet.has(point.id)) {
-    seenSet.add(point.id);
-    saveState();
-  }
-  updateFragCount();
-  renderPoints(area);
-  $("#areaNote").innerHTML = `${area.en}<br><span>欠片 ${area.points.filter((p) => foundSet.has(p.id) && p.frag).length} / ${area.points.filter((p) => p.frag).length}</span>`;
-  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
-function tryAreaGate() {
-  const area = currentArea;
-  if (!area || !area.gate) return;
-  const v = normalizeAnswer($("#gateInput").value);
-  const ok = area.gate.answers.some((a) => normalizeAnswer(a) === v);
+
+/* ===== final ===== */
+function renderFinal() {
+  const slots = $("#pieceSlots");
+  slots.innerHTML = "";
+  FILES.forEach((file) => {
+    const span = document.createElement("span");
+    span.className = "piece-slot" + (solvedSet.has(file.id) ? " is-got" : "");
+    span.textContent = solvedSet.has(file.id) ? file.piece : "？";
+    slots.appendChild(span);
+  });
+  $("#finalForm").style.display = finalSolved ? "none" : "";
+  $("#finalMsg").textContent = finalSolved ? "最後の鍵は、もう開かれている。" : "";
+  $("#replayEnding").hidden = !finalSolved;
+}
+function tryFinal() {
+  const v = normalize($("#finalInput").value);
+  const ok = FINAL_ANSWERS.some((a) => normalize(a) === v);
   if (ok) {
-    gatesOpen.add(area.id); saveState();
-    $("#gateBox").hidden = true; $("#areaBody").hidden = false;
-    renderPoints(area);
+    finalSolved = true; saveState(); renderFinal();
+    playEnding();
   } else {
-    $("#gateMsg").textContent = area.gate.msg;
+    $("#finalMsg").textContent = "鍵が違う。集めた文字を、順に並べて。";
   }
 }
-$("#gateButton").addEventListener("click", tryAreaGate);
-$("#gateInput").addEventListener("keydown", (e) => { if (e.key === "Enter") tryAreaGate(); });
+$("#finalButton").addEventListener("click", tryFinal);
+$("#finalInput").addEventListener("keydown", (e) => { if (e.key === "Enter") tryFinal(); });
 
 /* ===== ending ===== */
 function playEnding() {
@@ -234,15 +204,17 @@ function playEnding() {
 $("#endingClose").addEventListener("click", () => {
   const overlay = $("#endingOverlay");
   overlay.hidden = true; overlay.classList.remove("playing");
-  renderMap(); setScreen(mapScreen);
 });
+$("#replayEnding").addEventListener("click", playEnding);
 
 /* ===== nav ===== */
-$("#enterButton").addEventListener("click", () => { renderMap(); setScreen(mapScreen); });
+$("#enterButton").addEventListener("click", () => { renderBoard(); setScreen(boardScreen); });
 $("#brandHome").addEventListener("click", (e) => { e.preventDefault(); setScreen(introScreen); });
-$("#areaBack").addEventListener("click", () => { renderMap(); setScreen(mapScreen); });
 $("#resetButton").addEventListener("click", () => {
-  foundSet.clear(); gatesOpen.clear(); seenSet.clear(); saveState(); renderMap();
+  solvedSet.clear();
+  Object.keys(hintState).forEach((k) => delete hintState[k]);
+  finalSolved = false;
+  saveState(); renderBoard();
 });
 
 /* ===== atmosphere: dust + random glitch ===== */
@@ -267,4 +239,4 @@ window.setInterval(() => {
   }
 }, 7000);
 
-updateFragCount();
+updateCount();

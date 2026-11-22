@@ -137,3 +137,27 @@ main{position:relative;z-index:2;padding:96px 20px 40px;max-width:980px;margin:0
   .area-name{flex-basis:100%;order:2}
   .section-note{display:none}
 }
+
+/* ===== case files v2 ===== */
+.file-list{display:grid;gap:16px;margin-top:24px}
+.file-card{background:var(--panel);border:1px solid var(--line);padding:22px 24px;clip-path:polygon(0 0,97.5% 0,100% 22px,100% 100%,1.5% 100%,0 calc(100% - 22px))}
+.file-card.is-solved{border-color:rgba(166,217,35,.35)}
+.file-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-bottom:1px dashed rgba(255,255,255,.14);padding-bottom:12px}
+.file-tag{font:700 10px var(--mono);letter-spacing:.24em;color:var(--red-bright)}
+.file-title{margin:0;font:800 20px var(--display);letter-spacing:.05em;flex:1}
+.file-status{font:700 10px var(--mono);letter-spacing:.14em;color:var(--dim)}
+.file-card.is-solved .file-status{color:var(--leaf)}
+.file-riddle{font-size:13.5px;line-height:2.1;color:#d5dae4;white-space:pre-line}
+.hint-line{font-size:12px;line-height:1.9;color:var(--pale);background:rgba(184,205,235,.05);border-left:2px solid rgba(184,205,235,.4);padding:8px 12px;margin:8px 0}
+.file-actions{margin:12px 0}
+.reward{margin-top:16px;border:1px solid rgba(184,205,235,.25);background:rgba(184,205,235,.04);padding:18px 20px}
+.reward-tag{font:700 9.5px var(--mono);letter-spacing:.26em;color:var(--pale);margin:0 0 8px}
+.reward h4{margin:0 0 10px;font:800 15.5px var(--display);letter-spacing:.04em}
+.reward-body{font-size:13px;line-height:2.1;color:#c9ccd6;white-space:pre-line;margin:0}
+.final-card{margin-top:30px;border:1px solid rgba(255,77,94,.4);background:rgba(182,46,59,.05);padding:24px}
+.final-title{margin:6px 0 14px;font:800 22px var(--display);letter-spacing:.05em}
+.piece-slots{display:flex;gap:10px;margin:0 0 16px}
+.piece-slot{width:44px;height:52px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#0b0c10;font-size:19px;color:var(--dim)}
+.piece-slot.is-got{border-color:rgba(184,205,235,.55);color:var(--pale);box-shadow:0 0 14px rgba(184,205,235,.12)}
+.final-desc{font-size:12.5px;line-height:1.95;color:#c9ccd6}
+.sealed-replay{margin-top:14px;background:transparent;border:1px solid rgba(184,205,235,.4);color:var(--pale);font:600 10px var(--mono);letter-spacing:.2em;padding:13px 20px;cursor:pointer}

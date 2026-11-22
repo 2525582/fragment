@@ -74,9 +74,11 @@ const TOTAL_FRAGS = AREAS.reduce((n, a) => n + a.points.filter((p) => p.frag).le
 /* ===== state ===== */
 const foundSet = new Set(JSON.parse(localStorage.getItem("fragment-found") || "[]"));
 const gatesOpen = new Set(JSON.parse(localStorage.getItem("fragment-gates") || "[]"));
+const seenSet = new Set(JSON.parse(localStorage.getItem("fragment-seen") || "[]"));
 function saveState() {
   localStorage.setItem("fragment-found", JSON.stringify([...foundSet]));
   localStorage.setItem("fragment-gates", JSON.stringify([...gatesOpen]));
+  localStorage.setItem("fragment-seen", JSON.stringify([...seenSet]));
 }
 function normalizeAnswer(v) { return v.trim().toUpperCase().replace(/[\s　]+/g, ""); }
 
@@ -160,8 +162,9 @@ function renderPoints(area) {
     btn.className = "point-item";
     const locked = point.gate && !gatesOpen.has(point.id);
     const found = foundSet.has(point.id);
-    btn.innerHTML = `<span>${point.label}</span><span class="point-state">${locked ? "鍵" : found ? "FOUND" : "未調査"}</span>`;
-    if (found) btn.classList.add("is-found");
+    const seen = seenSet.has(point.id);
+    btn.innerHTML = `<span>${point.label}</span><span class="point-state">${locked ? "鍵" : found ? "FOUND" : seen ? "調査済み" : "未調査"}</span>`;
+    if (found || seen) btn.classList.add("is-found");
     btn.addEventListener("click", () => openPoint(area, point));
     list.appendChild(btn);
   });
@@ -193,6 +196,10 @@ function openPoint(area, point) {
     saveState();
     document.body.classList.add("eroding");
     window.setTimeout(() => document.body.classList.remove("eroding"), 240);
+  }
+  if (!point.frag && !seenSet.has(point.id)) {
+    seenSet.add(point.id);
+    saveState();
   }
   updateFragCount();
   renderPoints(area);
@@ -235,7 +242,7 @@ $("#enterButton").addEventListener("click", () => { renderMap(); setScreen(mapSc
 $("#brandHome").addEventListener("click", (e) => { e.preventDefault(); setScreen(introScreen); });
 $("#areaBack").addEventListener("click", () => { renderMap(); setScreen(mapScreen); });
 $("#resetButton").addEventListener("click", () => {
-  foundSet.clear(); gatesOpen.clear(); saveState(); renderMap();
+  foundSet.clear(); gatesOpen.clear(); seenSet.clear(); saveState(); renderMap();
 });
 
 /* ===== atmosphere: dust + random glitch ===== */

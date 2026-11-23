@@ -4,139 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FRAGMENT — 残像の欠片</title>
-<meta name="description" content="CHARACTER ARCHIVE — AFTERIMAGE に繋がる、本格謎解き。手がかりは、あらゆる場所に隠されている。">
-<link rel="stylesheet" href="style.css?v=5">
+<meta name="description" content="説明のない記録。答えは、書かれていない。">
+<style>
+  :root{--bg:#07080b;--panel:#101218;--line:rgba(255,255,255,.13);--paper:#e7e9ed;--muted:#9ba1aa;--dim:#69717c;--red:#b62e3b;--red-bright:#ff4d5e;--pale:#B8CDEB;--leaf:#A6D923;--mono:Consolas,"Liberation Mono",monospace;--display:"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN",sans-serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 600px at 70% -10%,#14161f 0%,var(--bg) 55%);color:var(--paper);font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;min-height:100vh;overflow-x:hidden}
+  ::selection{background:var(--red);color:#fff}
+  main{max-width:760px;margin:0 auto;padding:9vh 22px 70px;position:relative;z-index:2}
+  .kicker{font:700 10px var(--mono);letter-spacing:.34em;color:var(--dim);margin:0 0 14px}
+  h1{font:900 clamp(46px,10vw,84px)/0.95 var(--display);letter-spacing:.01em;margin:0}
+  h1 em{font-style:normal;color:var(--pale);text-shadow:0 0 26px rgba(184,205,235,.3)}
+  .sub{font:11px var(--mono);letter-spacing:.22em;color:var(--muted);margin:14px 0 40px}
+  .warn{border:1px solid rgba(255,77,94,.35);background:rgba(182,46,59,.05);padding:18px 20px;margin-bottom:44px}
+  .warn h2{margin:0 0 10px;font:800 13px var(--display);letter-spacing:.3em}
+  .warn p{font-size:12.5px;line-height:2;color:#c9ccd6;margin:0 0 8px}
+  .warn p:last-child{margin-bottom:0}
+  .story{font-size:14px;line-height:2.3;color:#d5dae4;white-space:pre-line;margin:0 0 48px}
+  .hero-photo{width:100%;border:1px solid var(--line);filter:saturate(.8) brightness(.9);display:block;margin-bottom:48px}
+  .obj-label{font:700 9.5px var(--mono);letter-spacing:.28em;color:var(--dim);margin:0 0 12px}
+  .specimens{display:grid;gap:12px;margin-bottom:48px}
+  .specimen{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--line);padding:16px 18px}
+  .specimen .swatch{width:34px;height:44px;flex:none;border:1px solid rgba(255,255,255,.25)}
+  .specimen .meta{font:10px var(--mono);letter-spacing:.18em;color:var(--dim);line-height:1.9}
+  .specimen .meta b{display:block;font:800 15px var(--display);letter-spacing:.08em;color:var(--paper)}
+  .specimen .code{margin-left:auto;font:700 13px var(--mono);letter-spacing:.14em;color:var(--paper)}
+  .letter{border:1px solid var(--line);background:#0b0c10;padding:22px;margin-bottom:48px}
+  .letter p{font-size:13.5px;line-height:2.3;color:#c9ccd6;margin:0;white-space:pre-line}
+  .blackout{background:#000;color:transparent;border:1px solid rgba(255,255,255,.22);padding:0 10px;cursor:pointer;user-select:none}
+  .blackout.open{background:rgba(184,205,235,.1);color:var(--pale);border-color:rgba(184,205,235,.5)}
+  .door-link{display:flex;align-items:center;gap:16px;border:1px solid rgba(184,205,235,.35);background:rgba(184,205,235,.04);padding:20px 22px;color:var(--paper);text-decoration:none;margin-bottom:56px}
+  .door-link:hover{border-color:var(--pale)}
+  .door-link .door-mark{width:30px;height:42px;border:1px solid rgba(184,205,235,.5);position:relative;flex:none}
+  .door-link .door-mark::after{content:"";position:absolute;right:4px;top:50%;width:4px;height:4px;border-radius:50%;background:var(--pale)}
+  .door-link b{font:800 16px var(--display);letter-spacing:.1em}
+  .door-link span{display:block;font:9px var(--mono);letter-spacing:.24em;color:var(--dim);margin-top:4px}
+  footer{border-top:1px dashed rgba(255,255,255,.12);padding-top:18px;display:flex;gap:22px;flex-wrap:wrap}
+  footer a{font:10px var(--mono);letter-spacing:.18em;color:var(--dim);text-decoration:none}
+  footer a:hover{color:var(--paper)}
+</style>
 </head>
 <body>
-  <canvas id="dustCanvas" aria-hidden="true"></canvas>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="cracks" aria-hidden="true"></div>
+<main>
+  <p class="kicker">A RUINED ARCHIVE</p>
+  <h1>FRAG<em>MENT</em></h1>
+  <p class="sub">残像の欠片</p>
 
-  <header class="topbar">
-    <a class="brand" href="#" id="brandHome">FRAGMENT<span>残像の欠片</span></a>
-    <div class="top-status">
-      <span class="frag-count" id="fragCount">SOLVED 0 / 6</span>
-      <a class="to-archive" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">TO ARCHIVE</a>
+  <div class="warn">
+    <h2>はじめに</h2>
+    <p>WARNING — 先に本編の記録「CHARACTER ARCHIVE — AFTERIMAGE」を読むことを強く推奨する。</p>
+    <p>ここには、説明がない。問いは書かれていない。答えも、書かれていない。</p>
+  </div>
+
+  <p class="story">『存在した証は、残像として残り続ける。』
+この場所は、双子の姉妹の記録を守っていた。姉はアルマ、妹はノエル。
+双子は「生成」された存在だった。世界の象徴である蝶の力を、二人で分け合って生まれた。
+力は一人分。それを二人で分け合う。それが、すべての始まりだった。</p>
+
+  <p class="obj-label">A PHOTOGRAPH — 記録写真</p>
+  <img class="hero-photo" src="images/noel_tv1.jpg" alt="">
+
+  <p class="obj-label">SPECIMENS — 標本タグ</p>
+  <div class="specimens">
+    <div class="specimen">
+      <div class="swatch" style="background:#A6D923"></div>
+      <div class="meta">SPECIMEN 003<b>ALMA</b></div>
+      <div class="code">#A6D923</div>
     </div>
-  </header>
-
-  <main>
-    <!-- ===== INTRO ===== -->
-    <section class="screen is-active" id="introScreen">
-      <p class="intro-kicker">A RUINED ARCHIVE — REAL PUZZLE HUNT</p>
-      <h1 class="intro-title">FRAG<em>MENT</em></h1>
-      <p class="intro-sub">残像の欠片 — 本格謎解き</p>
-
-      <div class="notice">
-        <h2>はじめに</h2>
-        <p class="warn-line">WARNING — 先に本編の記録を読むことを強く推奨する。</p>
-        <p>これは、記録サイト「CHARACTER ARCHIVE — AFTERIMAGE」と繋がる謎解きです。ここにある問いの答えは、このページの中にはありません。</p>
-        <p>手がかりは、本編のサイトのあらゆる場所——プロフィール、セリフ集、画廊、世界観、概要、そしてこの廃墟の設計図（GitHub）にまで隠されています。行って、見て、数えて、導き出してください。</p>
-        <p>物語は、双子の姉妹——アルマとノエルについて。謎を1つ解くごとに、彼女たちの記録が1つ復元されます。6つの謎をすべて解いた者だけが、最後の鍵に辿り着けます。</p>
-        <p><a class="archive-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">CHARACTER ARCHIVE — AFTERIMAGE を開く</a></p>
-        <p class="notice-small">進行状況は自動で記録されます。各ファイルには段階ヒントがあります（詰まったら開いてください）。</p>
-      </div>
-
-      <button class="enter-button" id="enterButton" type="button">調査をはじめる<span>BEGIN THE HUNT</span></button>
-      <p class="intro-foot">THE ANSWERS ARE NOT HERE. THEY ARE EVERYWHERE.</p>
-    </section>
-
-    <!-- ===== BOARD ===== -->
-    <section class="screen" id="boardScreen" aria-hidden="true">
-      <div class="section-heading">
-        <div><p class="eyebrow"><span class="eyebrow-line"></span> CASE FILES</p><h2>調査<em>ファイル</em></h2></div>
-        <p class="section-note">6 FILES + FINAL<br><span>謎は本編の中に</span></p>
-      </div>
-      <p class="map-lead">各ファイルの問いに答えると、導出文字が1つ手に入り、物語が1つ復元されます。答えはすべて、本編「AFTERIMAGE」とその周辺から導き出せます。</p>
-      <div class="file-list" id="fileList"></div>
-
-      <div class="final-card" id="finalCard">
-        <p class="file-tag">FINAL — 最後の鍵</p>
-        <h3 class="final-title">集めた文字が、言葉になる</h3>
-        <div class="piece-slots" id="pieceSlots"></div>
-        <p class="final-desc">6つの導出文字を、ファイルの順につなげた言葉が最後の鍵です。</p>
-        <div class="gate-form" id="finalForm">
-          <input id="finalInput" type="text" placeholder="最後の鍵を入力" autocomplete="off" spellcheck="false">
-          <button id="finalButton" type="button">開ける</button>
-        </div>
-        <p class="gate-msg" id="finalMsg"></p>
-        <button class="sealed-replay" id="replayEnding" type="button" hidden>REPLAY ENDING — エンディングをもう一度見る</button>
-      </div>
-
-      <div class="section-heading case2-heading">
-        <div><p class="eyebrow"><span class="eyebrow-line"></span> CASE 2</p><h2>残された<em>記録</em></h2></div>
-        <p class="section-note">4 FILES + FINAL 2<br><span>仕掛けは、もっと乱暴に</span></p>
-      </div>
-      <p class="map-lead">ここからの手がかりは、ページの隅や、他人の文書や、大量の記録の中に紛れている。黒塗りは、押せば開く。たとえば——この文の中の黒塗り <span class="redact" data-redact>と</span> は、ある3文字の言葉の1文字目だ（黒塗りの記録 1/3）。</p>
-      <div class="file-list" id="fileList2"></div>
-
-      <div class="final-card" id="finalCard2">
-        <p class="file-tag">FINAL 2 — もう一つの鍵</p>
-        <h3 class="final-title">声の欠片が、言葉になる</h3>
-        <div class="piece-slots" id="pieceSlots2"></div>
-        <p class="final-desc">CASE 2 の4つの導出文字を、ファイルの順につなげた言葉が、もう一つの鍵です。</p>
-        <div class="gate-form" id="finalForm2">
-          <input id="finalInput2" type="text" placeholder="もう一つの鍵を入力" autocomplete="off" spellcheck="false">
-          <button id="finalButton2" type="button">開ける</button>
-        </div>
-        <p class="gate-msg" id="finalMsg2"></p>
-        <button class="sealed-replay" id="replayEnding2" type="button" hidden>REPLAY ENDING 2 — もう一つの結末を見る</button>
-      </div>
-
-      <div class="map-actions">
-        <button class="ghost-button" id="resetButton" type="button">調査記録をリセット</button>
-        <a class="ghost-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">本編の記録へ — AFTERIMAGE</a>
-        <a class="ghost-link" href="https://github.com/2525582/fragment" target="_blank" rel="noopener">設計図 — GitHub</a>
-        <a class="ghost-link file-link" href="records.txt" download>log_all.txt</a>
-        <a class="ghost-link file-link" href="door.html">unlogged_door.html</a>
-      </div>
-      <footer class="screen-footer"><span>FRAGMENT</span><span>END OF FILES</span></footer>
-    </section>
-  </main>
-
-  <!-- ===== ENDING ===== -->
-  <div class="ending-overlay" id="endingOverlay" hidden>
-    <div class="ending-inner">
-      <p class="ending-kicker">FINAL KEY ACCEPTED — 最後の鍵</p>
-      <div class="ending-lines">
-        <p>「ずっと、探していた。」</p>
-        <p>「あなたは、ここにいたのね。」</p>
-        <p>「……アルマ？」</p>
-        <p>「今度こそ、伝えるよ。」</p>
-        <p>「好き。ずっと、好きだった。」</p>
-        <p class="ending-note-line">——残像は、少しだけ微笑んだ気がした。</p>
-      </div>
-      <p class="ending-key">SHE IS STILL HERE.</p>
-      <p class="ending-fin">— FRAGMENT COMPLETE —</p>
-      <p class="ending-credit">FRAGMENT — 残像の欠片<br>CREATED BY ぱんだ</p>
-      <div class="ending-actions">
-        <a class="ending-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">記録の続きは AFTERIMAGE で</a>
-        <button class="ending-close" id="endingClose" type="button">CLOSE — 調査に戻る</button>
-      </div>
+    <div class="specimen">
+      <div class="swatch" style="background:#B8CDEB"></div>
+      <div class="meta">SPECIMEN 004<b>NOEL</b></div>
+      <div class="code">#B8CDEB</div>
     </div>
   </div>
 
-  <!-- ===== ENDING 2 ===== -->
-  <div class="ending-overlay" id="endingOverlay2" hidden>
-    <div class="ending-inner">
-      <p class="ending-kicker">SECOND KEY ACCEPTED — もう一つの鍵</p>
-      <div class="ending-lines">
-        <p>「……聞こえた。あなたの声が、聞こえた。」</p>
-        <p>「ずっと言えなかった言葉、受け取ったよ。」</p>
-        <p>「私も、好きだよ。ずっと、ずっと。」</p>
-        <p>「今度は離さない。残像でも、欠片でも。」</p>
-        <p class="ending-note-line">——扉の向こうで、二つの影が重なった。</p>
-      </div>
-      <p class="ending-key">あえたね</p>
-      <p class="ending-fin">— FRAGMENT SECOND ENDING —</p>
-      <p class="ending-credit">FRAGMENT — 残像の欠片<br>CREATED BY ぱんだ</p>
-      <div class="ending-actions">
-        <a class="ending-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">記録の続きは AFTERIMAGE で</a>
-        <button class="ending-close" id="endingClose2" type="button">CLOSE — 調査に戻る</button>
-      </div>
-    </div>
+  <p class="obj-label">A LETTER — 黒塗りの手紙</p>
+  <div class="letter">
+    <p><span class="blackout">ずっと、言えなかったことがある。</span>
+<span class="blackout">あなたの蝶が透明になっていくのを、私は隣で見ていた。</span>
+<span class="blackout">ごめんね、と、すき、のあいだで、3年が過ぎた。</span>
+<span class="blackout">——アルマ</span></p>
   </div>
 
-  <script src="script.js?v=5"></script>
+  <a class="door-link" href="vault.html">
+    <div class="door-mark" aria-hidden="true"></div>
+    <div><b>記録庫</b><span>THE VAULT</span></div>
+  </a>
+
+  <footer>
+    <a href="records.txt" download>log_all.txt</a>
+    <a href="door.html">unlogged_door.html</a>
+    <a href="https://github.com/2525582/fragment" target="_blank" rel="noopener">fragment — GitHub</a>
+    <a href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">AFTERIMAGE</a>
+  </footer>
+</main>
+<script>
+  document.querySelectorAll(".blackout").forEach(function (el) {
+    el.addEventListener("click", function () { el.classList.add("open"); });
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>room</title>
+<style>
+  :root{--bg:#07080b;--line:rgba(255,255,255,.13);--paper:#e7e9ed;--muted:#9ba1aa;--dim:#69717c;--red:#b62e3b;--red-bright:#ff4d5e;--pale:#B8CDEB;--mono:Consolas,"Liberation Mono",monospace;--display:"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN",sans-serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(900px 520px at 50% -10%,#12141d 0%,var(--bg) 60%);color:var(--paper);font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;min-height:100vh}
+  ::selection{background:var(--red);color:#fff}
+  main{max-width:640px;margin:0 auto;padding:10vh 22px 70px}
+  .file-name{font:700 10px var(--mono);letter-spacing:.26em;color:var(--dim);margin:0 0 26px}
+  .box{border:1px solid var(--line);background:linear-gradient(180deg,#0d0f16,#090a0f);padding:40px 30px;clip-path:polygon(0 0,94% 0,100% 5%,100% 100%,6% 100%,0 95%)}
+  .gate-form{display:flex;gap:10px;flex-wrap:wrap}
+  .gate-form input{background:#0b0c10;border:1px solid rgba(255,255,255,.24);color:var(--paper);font:600 15px var(--mono);letter-spacing:.2em;padding:13px 14px;outline:none;flex:1;min-width:180px}
+  .gate-form input:focus{border-color:var(--red-bright)}
+  .gate-form button{background:var(--red);color:#fff;border:0;font:700 11px var(--mono);letter-spacing:.18em;padding:0 24px;cursor:pointer;min-height:46px}
+  .gate-form button:hover{background:var(--red-bright)}
+  .gate-msg{font:12px var(--mono);letter-spacing:.2em;color:var(--muted);min-height:16px;margin:16px 0 0}
+  .denied{animation:shake .32s ease}
+  @keyframes shake{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}}
+  .story{font-size:14px;line-height:2.3;color:#d5dae4;white-space:pre-line;margin:0 0 40px}
+  .photo{width:100%;border:1px solid var(--line);filter:saturate(.82) brightness(.92);display:block;margin:0 0 40px}
+  .obj-label{font:700 9.5px var(--mono);letter-spacing:.28em;color:var(--dim);margin:0 0 12px}
+  .plate{border:1px solid var(--line);background:#0b0c10;padding:16px 18px;font:12px var(--mono);letter-spacing:.16em;color:#c9ccd6;line-height:2;margin-bottom:44px}
+  .next-link{display:flex;align-items:center;gap:16px;border:1px solid rgba(184,205,235,.35);background:rgba(184,205,235,.04);padding:18px 20px;color:var(--paper);text-decoration:none}
+  .next-link:hover{border-color:var(--pale)}
+  .next-link b{font:800 15px var(--display);letter-spacing:.1em}
+  .next-link span{display:block;font:9px var(--mono);letter-spacing:.24em;color:var(--dim);margin-top:4px}
+  .back-link{display:inline-block;margin-top:30px;color:var(--muted);font:600 10.5px var(--mono);letter-spacing:.2em;text-decoration:none;border:1px solid var(--line);padding:12px 18px}
+  .back-link:hover{color:var(--paper)}
+</style>
+</head>
+<body>
+<main>
+  <p class="file-name">A SMALL ROOM — 小部屋</p>
+
+  <section id="gateStage">
+    <div class="box" id="gateBox">
+      <div class="gate-form">
+        <input id="gateInput" type="text" inputmode="numeric" autocomplete="off" spellcheck="false">
+        <button id="gateButton" type="button">開く</button>
+      </div>
+      <p class="gate-msg" id="gateMsg"></p>
+    </div>
+    <a class="back-link" href="vault.html">記録庫に戻る</a>
+  </section>
+
+  <section id="contentStage" hidden>
+    <p class="story">双子の部屋には、ベッドが二つ並んでいる。片方は埃をかぶり、ノエルのベッドだけが今も整えられている。帰るはずのない場所を、帰れる場所のままにするために、アルマは片付け続けている。
+ノエルの力が衰えると、周囲は彼女を遠ざけるようになった。視線が冷たくなり、声が届かなくなった。アルマは止められなかった。伝えるべき言葉を、伝えられなかった。
+鍵のかかった引き出しの中には、書きかけの手紙が何通も入っていた。全部、同じ書き出し。全部、途中で終わっている。
+『今度こそ、あなたに好きだと伝えたい。』</p>
+
+    <img class="photo" src="images/noel_portrait.jpg" alt="">
+
+    <p class="obj-label">GREENHOUSE TAG — 温室の札</p>
+    <div class="plate">供花 — 白い花
+備考 — 名前は記録データの中</div>
+
+    <a class="next-link" href="deep.html"><div><b>最奥</b><span>THE DEEPEST</span></div></a>
+    <br>
+    <a class="back-link" href="vault.html">記録庫に戻る</a>
+  </section>
+</main>
+<script>
+"use strict";
+var KEY = "fragment4-room2";
+function openContent() {
+  document.getElementById("gateStage").hidden = true;
+  document.getElementById("contentStage").hidden = false;
+}
+function tryGate() {
+  var digits = document.getElementById("gateInput").value.replace(/[^0-9]/g, "");
+  if (parseInt(digits, 10) === 320) {
+    localStorage.setItem(KEY, "1");
+    openContent();
+  } else {
+    document.getElementById("gateMsg").textContent = "……";
+    var box = document.getElementById("gateBox");
+    box.classList.remove("denied"); void box.offsetWidth; box.classList.add("denied");
+  }
+}
+document.getElementById("gateButton").addEventListener("click", tryGate);
+document.getElementById("gateInput").addEventListener("keydown", function (e) { if (e.key === "Enter") tryGate(); });
+if (localStorage.getItem(KEY) === "1") openContent();
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vault</title>
+<style>
+  :root{--bg:#07080b;--panel:#101218;--line:rgba(255,255,255,.13);--paper:#e7e9ed;--muted:#9ba1aa;--dim:#69717c;--red:#b62e3b;--red-bright:#ff4d5e;--pale:#B8CDEB;--mono:Consolas,"Liberation Mono",monospace;--display:"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN",sans-serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(900px 520px at 50% -10%,#12141d 0%,var(--bg) 60%);color:var(--paper);font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;min-height:100vh}
+  ::selection{background:var(--red);color:#fff}
+  main{max-width:640px;margin:0 auto;padding:10vh 22px 70px}
+  .file-name{font:700 10px var(--mono);letter-spacing:.26em;color:var(--dim);margin:0 0 26px}
+  .box{border:1px solid var(--line);background:linear-gradient(180deg,#0d0f16,#090a0f);padding:40px 30px;clip-path:polygon(0 0,94% 0,100% 5%,100% 100%,6% 100%,0 95%)}
+  .gate-form{display:flex;gap:10px;flex-wrap:wrap}
+  .gate-form input{background:#0b0c10;border:1px solid rgba(255,255,255,.24);color:var(--paper);font:600 15px var(--mono);letter-spacing:.2em;padding:13px 14px;outline:none;flex:1;min-width:180px}
+  .gate-form input:focus{border-color:var(--red-bright)}
+  .gate-form button{background:var(--red);color:#fff;border:0;font:700 11px var(--mono);letter-spacing:.18em;padding:0 24px;cursor:pointer;min-height:46px}
+  .gate-form button:hover{background:var(--red-bright)}
+  .gate-msg{font:12px var(--mono);letter-spacing:.2em;color:var(--muted);min-height:16px;margin:16px 0 0}
+  .denied{animation:shake .32s ease}
+  @keyframes shake{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}}
+  .story{font-size:14px;line-height:2.3;color:#d5dae4;white-space:pre-line;margin:0 0 44px}
+  .obj-label{font:700 9.5px var(--mono);letter-spacing:.28em;color:var(--dim);margin:0 0 14px}
+  .clock{width:190px;height:190px;border:1px solid rgba(255,255,255,.3);border-radius:50%;margin:0 auto 44px;position:relative;background:radial-gradient(circle,#0d0f16 58%,#090a0f)}
+  .clock .hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;background:var(--paper)}
+  .clock .hour{width:4px;height:52px;margin-left:-2px;transform:rotate(100deg)}
+  .clock .minute{width:2.5px;height:76px;margin-left:-1.25px;transform:rotate(120deg);background:var(--pale)}
+  .clock .pin{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:var(--paper)}
+  .clock .tick{position:absolute;left:50%;top:6px;width:2px;height:10px;margin-left:-1px;background:rgba(255,255,255,.45)}
+  .next-link{display:flex;align-items:center;gap:16px;border:1px solid rgba(184,205,235,.35);background:rgba(184,205,235,.04);padding:18px 20px;color:var(--paper);text-decoration:none}
+  .next-link:hover{border-color:var(--pale)}
+  .next-link b{font:800 15px var(--display);letter-spacing:.1em}
+  .next-link span{display:block;font:9px var(--mono);letter-spacing:.24em;color:var(--dim);margin-top:4px}
+  .back-link{display:inline-block;margin-top:30px;color:var(--muted);font:600 10.5px var(--mono);letter-spacing:.2em;text-decoration:none;border:1px solid var(--line);padding:12px 18px}
+  .back-link:hover{color:var(--paper)}
+</style>
+</head>
+<body>
+<main>
+  <p class="file-name">THE VAULT — 記録庫</p>
+
+  <section id="gateStage">
+    <div class="box" id="gateBox">
+      <div class="gate-form">
+        <input id="gateInput" type="text" inputmode="numeric" autocomplete="off" spellcheck="false">
+        <button id="gateButton" type="button">開く</button>
+      </div>
+      <p class="gate-msg" id="gateMsg"></p>
+    </div>
+    <a class="back-link" href="./">入口に戻る</a>
+  </section>
+
+  <section id="contentStage" hidden>
+    <p class="story">幼い頃、蝶を生み出す力に優れていたのは妹のノエルだった。彼女の周りにはいつも蝶が舞い、人は彼女を愛した。姉のアルマはいつもその隣にいた。
+しかし成長するにつれ、力は釣り合いを失っていった。アルマの鱗粉は鮮やかに色づき、ノエルの蝶は透明になっていった。分け合ったはずの力は、いつしか一人に集まっていった。
+誰のせいでもない。でも、確かに何かが壊れ始めた。</p>
+
+    <img src="images/alma_lie.jpg" alt="" style="width:100%;border:1px solid var(--line);filter:saturate(.85) brightness(.92);display:block;margin:0 0 44px">
+
+    <p class="obj-label">A STOPPED CLOCK — 止まった時計</p>
+    <div class="clock" aria-hidden="true">
+      <div class="tick"></div>
+      <div class="hand hour"></div>
+      <div class="hand minute"></div>
+      <div class="pin"></div>
+    </div>
+
+    <a class="next-link" href="room2.html"><div><b>小部屋</b><span>A SMALL ROOM</span></div></a>
+    <br>
+    <a class="back-link" href="./">入口に戻る</a>
+  </section>
+</main>
+<script>
+"use strict";
+var KEY = "fragment4-vault";
+function openContent() {
+  document.getElementById("gateStage").hidden = true;
+  document.getElementById("contentStage").hidden = false;
+}
+function tryGate() {
+  var v = document.getElementById("gateInput").value.replace(/[^0-9]/g, "");
+  if (v === "69238") {
+    localStorage.setItem(KEY, "1");
+    openContent();
+  } else {
+    document.getElementById("gateMsg").textContent = "……";
+    var box = document.getElementById("gateBox");
+    box.classList.remove("denied"); void box.offsetWidth; box.classList.add("denied");
+  }
+}
+document.getElementById("gateButton").addEventListener("click", tryGate);
+document.getElementById("gateInput").addEventListener("keydown", function (e) { if (e.key === "Enter") tryGate(); });
+if (localStorage.getItem(KEY) === "1") openContent();
+</script>
+</body>
+</html>

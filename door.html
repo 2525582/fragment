@@ -45,6 +45,7 @@
 
   <!-- ===== GATE ===== -->
   <section id="gateStage">
+    <img src="images/noel_tv3.jpg" alt="" style="width:100%;border:1px solid rgba(255,255,255,.13);filter:saturate(.8) brightness(.9);display:block;margin-bottom:22px">
     <div class="door" id="doorBox">
       <div class="door-mark" aria-hidden="true"></div>
       <h1 class="door-title">扉</h1>
@@ -157,6 +158,7 @@ function stepGift() {
   addLine("「……覚えてて、くれたんだ。」");
   addLine("「じゃあ、これ。私の声の欠片。持ってって。」");
   addLine("「アルマに、届けて。」");
+  addLine("「……あと、最奥の鍵は、白い花。内緒だよ。」", true);
   localStorage.setItem("fragment2-door", "1");
   reward.innerHTML = '<div class="piece-box"><p class="piece-tag">VOICE FRAGMENT — 声の欠片を受け取った</p><p class="piece-char">導出文字「た」</p></div>';
 }

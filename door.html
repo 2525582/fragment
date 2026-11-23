@@ -155,12 +155,10 @@ function stepRemember() {
 function stepGift() {
   setChoices([]);
   addLine("「……覚えてて、くれたんだ。」");
-  window.setTimeout(function () {
-    addLine("「じゃあ、これ。私の声の欠片。持ってって。」");
-    addLine("「アルマに、届けて。」");
-    localStorage.setItem("fragment2-door", "1");
-    reward.innerHTML = '<div class="piece-box"><p class="piece-tag">VOICE FRAGMENT — 声の欠片を受け取った</p><p class="piece-char">導出文字「た」</p></div>';
-  }, 1200);
+  addLine("「じゃあ、これ。私の声の欠片。持ってって。」");
+  addLine("「アルマに、届けて。」");
+  localStorage.setItem("fragment2-door", "1");
+  reward.innerHTML = '<div class="piece-box"><p class="piece-tag">VOICE FRAGMENT — 声の欠片を受け取った</p><p class="piece-char">導出文字「た」</p></div>';
 }
 
 /* already visited */

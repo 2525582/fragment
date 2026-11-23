@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>unlogged_door</title>
+<style>
+  :root{--bg:#07080b;--panel:#101218;--line:rgba(255,255,255,.13);--paper:#e7e9ed;--muted:#9ba1aa;--dim:#69717c;--red:#b62e3b;--red-bright:#ff4d5e;--pale:#B8CDEB;--mono:Consolas,"Liberation Mono",monospace;--display:"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN",sans-serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(900px 520px at 50% -10%,#12141d 0%,var(--bg) 60%);color:var(--paper);font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;min-height:100vh}
+  ::selection{background:var(--red);color:#fff}
+  main{max-width:640px;margin:0 auto;padding:11vh 22px 60px}
+  .file-name{font:700 10px var(--mono);letter-spacing:.26em;color:var(--dim);margin:0 0 26px}
+  .door{border:1px solid var(--line);background:linear-gradient(180deg,#0d0f16,#090a0f);padding:44px 30px 38px;text-align:center;clip-path:polygon(0 0,94% 0,100% 5%,100% 100%,6% 100%,0 95%)}
+  .door-mark{width:74px;height:104px;margin:0 auto 26px;border:1px solid rgba(184,205,235,.4);position:relative;background:rgba(184,205,235,.03)}
+  .door-mark::after{content:"";position:absolute;right:9px;top:50%;width:7px;height:7px;border-radius:50%;background:var(--pale);opacity:.75}
+  .door-title{font:800 21px var(--display);letter-spacing:.14em;margin:0 0 12px}
+  .door-text{font-size:13px;line-height:2.05;color:#c9ccd6;margin:0 0 22px;white-space:pre-line}
+  .gate-form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .gate-form input{background:#0b0c10;border:1px solid rgba(255,255,255,.24);color:var(--paper);font:600 14px var(--mono);letter-spacing:.14em;padding:12px 14px;outline:none;flex:1;min-width:180px}
+  .gate-form input:focus{border-color:var(--red-bright)}
+  .gate-form button{background:var(--red);color:#fff;border:0;font:700 11px var(--mono);letter-spacing:.18em;padding:0 22px;cursor:pointer;min-height:44px}
+  .gate-form button:hover{background:var(--red-bright)}
+  .gate-msg{font:11px var(--mono);letter-spacing:.12em;color:#ff8089;min-height:15px;margin:14px 0 0}
+  .denied{animation:shake .32s ease}
+  @keyframes shake{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}}
+  .talk-line{font-size:15px;line-height:2.1;color:#dfe6f2;white-space:pre-line;margin:0 0 8px;animation:lineIn .7s ease both}
+  .talk-line.dim{color:var(--muted);font-size:13px}
+  @keyframes lineIn{from{opacity:0;transform:translateY(6px);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+  .choices{display:grid;gap:10px;margin-top:22px}
+  .choice{background:transparent;border:1px solid rgba(184,205,235,.35);color:var(--pale);font:600 12.5px var(--mono);letter-spacing:.12em;padding:14px 16px;cursor:pointer;text-align:left}
+  .choice:hover{border-color:var(--pale);background:rgba(184,205,235,.06);color:#fff}
+  .piece-box{margin-top:26px;border:1px solid rgba(184,205,235,.4);background:rgba(184,205,235,.05);padding:20px}
+  .piece-box .piece-tag{font:700 9.5px var(--mono);letter-spacing:.26em;color:var(--pale);margin:0 0 8px}
+  .piece-box .piece-char{font-size:30px;color:#fff;margin:0}
+  .back-link{display:inline-block;margin-top:30px;color:var(--muted);font:600 10.5px var(--mono);letter-spacing:.2em;text-decoration:none;border:1px solid var(--line);padding:12px 18px}
+  .back-link:hover{color:var(--paper);border-color:rgba(255,255,255,.4)}
+  .fadeout{animation:fadeOut 1.1s ease both}
+  @keyframes fadeOut{to{opacity:.12;filter:blur(2px)}}
+</style>
+</head>
+<body>
+<main>
+  <p class="file-name">UNLOGGED FILE — unlogged_door.html</p>
+
+  <!-- ===== GATE ===== -->
+  <section id="gateStage">
+    <div class="door" id="doorBox">
+      <div class="door-mark" aria-hidden="true"></div>
+      <h1 class="door-title">扉</h1>
+      <p class="door-text">記録の、どこにも載っていない扉。
+ノックの代わりに、言葉を置いていけ。
+彼女への言葉を。</p>
+      <div class="gate-form">
+        <input id="doorInput" type="text" placeholder="言葉を入力" autocomplete="off" spellcheck="false">
+        <button id="doorButton" type="button">ノックする</button>
+      </div>
+      <p class="gate-msg" id="doorMsg"></p>
+    </div>
+    <a class="back-link" href="./">FRAGMENT に戻る</a>
+  </section>
+
+  <!-- ===== TALK ===== -->
+  <section id="talkStage" hidden>
+    <div class="door" style="text-align:left">
+      <div id="talkLog"></div>
+      <div class="choices" id="talkChoices"></div>
+      <div id="talkReward"></div>
+    </div>
+    <a class="back-link" href="./">FRAGMENT に戻る</a>
+  </section>
+</main>
+
+<script>
+"use strict";
+var $ = function (s) { return document.querySelector(s); };
+function normalize(v) { return v.trim().replace(/[\s　]+/g, ""); }
+var DOOR_ANSWERS = ["すきだよ", "スキダヨ"];
+var loops = 0;
+
+function openDoor() {
+  $("#gateStage").hidden = true;
+  $("#talkStage").hidden = false;
+  startTalk();
+}
+function tryDoor() {
+  var v = normalize($("#doorInput").value);
+  var ok = DOOR_ANSWERS.some(function (a) { return normalize(a) === v; });
+  if (ok) {
+    openDoor();
+  } else {
+    $("#doorMsg").textContent = "違う。それは、彼女への言葉ではない。";
+    var box = $("#doorBox");
+    box.classList.remove("denied"); void box.offsetWidth; box.classList.add("denied");
+  }
+}
+$("#doorButton").addEventListener("click", tryDoor);
+$("#doorInput").addEventListener("keydown", function (e) { if (e.key === "Enter") tryDoor(); });
+
+/* ===== dialogue ===== */
+var log = $("#talkLog"), choices = $("#talkChoices"), reward = $("#talkReward");
+function addLine(text, dim) {
+  var p = document.createElement("p");
+  p.className = "talk-line" + (dim ? " dim" : "");
+  p.textContent = text;
+  log.appendChild(p);
+}
+function setChoices(list) {
+  choices.innerHTML = "";
+  list.forEach(function (c) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "choice"; b.textContent = c.label;
+    b.addEventListener("click", c.fn);
+    choices.appendChild(b);
+  });
+}
+function coldLoop(line) {
+  setChoices([]);
+  addLine(line);
+  window.setTimeout(function () {
+    log.classList.add("fadeout");
+    window.setTimeout(function () {
+      log.innerHTML = ""; log.classList.remove("fadeout");
+      loops++;
+      startTalk();
+    }, 1150);
+  }, 1400);
+}
+function startTalk() {
+  reward.innerHTML = "";
+  addLine(loops === 0 ? "「……だれ？ こんな場所に、もう誰も来ないはずなのに。」" : "「……また、来たの。」");
+  setChoices([
+    { label: "ノエルに会いに来た", fn: stepMet },
+    { label: "間違えた。帰る", fn: function () {
+        setChoices([]);
+        addLine("「そう。……さようなら。」");
+        addLine("扉は、静かに閉じた。", true);
+      } }
+  ]);
+}
+function stepMet() {
+  addLine("「私に？ 私はもう、死んだはずなのに。」");
+  setChoices([
+    { label: "忘れていない", fn: stepRemember },
+    { label: "正直、もう忘れかけていた", fn: function () { coldLoop("「……知ってた。みんな、そうだよ。」"); } }
+  ]);
+}
+function stepRemember() {
+  addLine("「ほんとう？ じゃあ、覚えてる？ 私の好きだったもの。」");
+  setChoices([
+    { label: "静かな場所と、花", fn: stepGift },
+    { label: "賑やかな場所と、歌", fn: function () { coldLoop("「違うよ。……やっぱり、忘れてる。」"); } }
+  ]);
+}
+function stepGift() {
+  setChoices([]);
+  addLine("「……覚えてて、くれたんだ。」");
+  window.setTimeout(function () {
+    addLine("「じゃあ、これ。私の声の欠片。持ってって。」");
+    addLine("「アルマに、届けて。」");
+    localStorage.setItem("fragment2-door", "1");
+    reward.innerHTML = '<div class="piece-box"><p class="piece-tag">VOICE FRAGMENT — 声の欠片を受け取った</p><p class="piece-char">導出文字「た」</p></div>';
+  }, 1200);
+}
+
+/* already visited */
+if (localStorage.getItem("fragment2-door") === "1") {
+  $("#doorMsg").textContent = "";
+  var note = document.createElement("p");
+  note.className = "gate-msg";
+  note.style.color = "#B8CDEB";
+  note.textContent = "この扉は、もう開かれている。彼女の声の欠片は、あなたの手の中にある。";
+  $("#doorBox").appendChild(note);
+}
+</script>
+</body>
+</html>

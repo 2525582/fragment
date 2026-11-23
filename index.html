@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FRAGMENT — 残像の欠片</title>
 <meta name="description" content="CHARACTER ARCHIVE — AFTERIMAGE に繋がる、本格謎解き。手がかりは、あらゆる場所に隠されている。">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <canvas id="dustCanvas" aria-hidden="true"></canvas>
@@ -63,10 +63,32 @@
         <button class="sealed-replay" id="replayEnding" type="button" hidden>REPLAY ENDING — エンディングをもう一度見る</button>
       </div>
 
+      <div class="section-heading case2-heading">
+        <div><p class="eyebrow"><span class="eyebrow-line"></span> CASE 2</p><h2>残された<em>記録</em></h2></div>
+        <p class="section-note">4 FILES + FINAL 2<br><span>仕掛けは、もっと乱暴に</span></p>
+      </div>
+      <p class="map-lead">ここからの手がかりは、ページの隅や、他人の文書や、大量の記録の中に紛れている。黒塗りは、押せば開く。たとえば——この文の中の黒塗り <span class="redact" data-redact>と</span> は、ある3文字の言葉の1文字目だ（黒塗りの記録 1/3）。</p>
+      <div class="file-list" id="fileList2"></div>
+
+      <div class="final-card" id="finalCard2">
+        <p class="file-tag">FINAL 2 — もう一つの鍵</p>
+        <h3 class="final-title">声の欠片が、言葉になる</h3>
+        <div class="piece-slots" id="pieceSlots2"></div>
+        <p class="final-desc">CASE 2 の4つの導出文字を、ファイルの順につなげた言葉が、もう一つの鍵です。</p>
+        <div class="gate-form" id="finalForm2">
+          <input id="finalInput2" type="text" placeholder="もう一つの鍵を入力" autocomplete="off" spellcheck="false">
+          <button id="finalButton2" type="button">開ける</button>
+        </div>
+        <p class="gate-msg" id="finalMsg2"></p>
+        <button class="sealed-replay" id="replayEnding2" type="button" hidden>REPLAY ENDING 2 — もう一つの結末を見る</button>
+      </div>
+
       <div class="map-actions">
         <button class="ghost-button" id="resetButton" type="button">調査記録をリセット</button>
         <a class="ghost-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">本編の記録へ — AFTERIMAGE</a>
         <a class="ghost-link" href="https://github.com/2525582/fragment" target="_blank" rel="noopener">設計図 — GitHub</a>
+        <a class="ghost-link file-link" href="records.txt" download>log_all.txt</a>
+        <a class="ghost-link file-link" href="door.html">unlogged_door.html</a>
       </div>
       <footer class="screen-footer"><span>FRAGMENT</span><span>END OF FILES</span></footer>
     </section>
@@ -94,6 +116,27 @@
     </div>
   </div>
 
-  <script src="script.js?v=4"></script>
+  <!-- ===== ENDING 2 ===== -->
+  <div class="ending-overlay" id="endingOverlay2" hidden>
+    <div class="ending-inner">
+      <p class="ending-kicker">SECOND KEY ACCEPTED — もう一つの鍵</p>
+      <div class="ending-lines">
+        <p>「……聞こえた。あなたの声が、聞こえた。」</p>
+        <p>「ずっと言えなかった言葉、受け取ったよ。」</p>
+        <p>「私も、好きだよ。ずっと、ずっと。」</p>
+        <p>「今度は離さない。残像でも、欠片でも。」</p>
+        <p class="ending-note-line">——扉の向こうで、二つの影が重なった。</p>
+      </div>
+      <p class="ending-key">あえたね</p>
+      <p class="ending-fin">— FRAGMENT SECOND ENDING —</p>
+      <p class="ending-credit">FRAGMENT — 残像の欠片<br>CREATED BY ぱんだ</p>
+      <div class="ending-actions">
+        <a class="ending-link" href="https://2525582.github.io/afterimage/" target="_blank" rel="noopener">記録の続きは AFTERIMAGE で</a>
+        <button class="ending-close" id="endingClose2" type="button">CLOSE — 調査に戻る</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=5"></script>
 </body>
 </html>

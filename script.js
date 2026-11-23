@@ -100,7 +100,8 @@ function setScreen(target) {
   window.scrollTo({ top: 0 });
 }
 function updateCount() {
-  $("#fragCount").textContent = `SOLVED ${solvedSet.size} / ${FILES.length}`;
+  const c2 = (typeof solved2 !== "undefined" && solved2) ? solved2.size : 0;
+  $("#fragCount").textContent = `SOLVED ${solvedSet.size + c2} / ${FILES.length + 4}`;
 }
 
 /* ===== board ===== */
@@ -145,6 +146,7 @@ function renderBoard() {
   list.querySelectorAll("[data-solve]").forEach((btn) => btn.addEventListener("click", () => trySolve(btn.getAttribute("data-solve"))));
   list.querySelectorAll("[data-input]").forEach((inp) => inp.addEventListener("keydown", (e) => { if (e.key === "Enter") trySolve(inp.getAttribute("data-input")); }));
   renderFinal();
+  if (typeof renderCase2 === "function") renderCase2();
   updateCount();
 }
 function trySolve(id) {
@@ -214,6 +216,7 @@ $("#resetButton").addEventListener("click", () => {
   solvedSet.clear();
   Object.keys(hintState).forEach((k) => delete hintState[k]);
   finalSolved = false;
+  if (typeof resetCase2 === "function") resetCase2();
   saveState(); renderBoard();
 });
 
@@ -239,4 +242,200 @@ window.setInterval(() => {
   }
 }, 7000);
 
+updateCount();
+
+/* ===== CASE 2 — 残された記録 (v3) ===== */
+var FILES2 = [
+  {
+    id: "f7", num: "07", title: "文書の鍵", piece: "あ",
+    riddle: "本編の設計図（GitHubのリポジトリ「afterimage」）を開け。最初に表示される文書（README）の「管理メモ — 保管の心得」には4つの文がある。その頭文字を、順に並べよ。",
+    answers: ["すきだよ", "スキダヨ"],
+    hints: [
+      "github.com/2525582/afterimage を開いて。",
+      "READMEは、リポジトリのトップにそのまま表示されている。「管理メモ」の4つの文を見て。",
+      "頭文字は——す・き・だ・よ。"
+    ],
+    rewardTitle: "復元された記録 VII — 管理メモの私信",
+    reward: "本編の設計図に紛れた管理メモ。その4行は、業務連絡の顔をした私信だった。\nすべての記録は薄い。気づけば人は忘れる。だから彼女は、誰にも見られない場所に本音を置いた。行の頭にだけ、想いを隠して。\n『すきだよ』——3年前に言えなかった言葉は、こんな形で今も保管され続けている。"
+  },
+  {
+    id: "f8", num: "08", title: "記録の鍵", piece: "え",
+    riddle: "この廃墟には、記録データ「log_all.txt」が残されている（このページの隅に、ファイル名だけが残っている）。ダウンロードして開き、「声」についての行を探せ。その行に記されたキーワードが答えだ。",
+    answers: ["しろいはな", "シロイハナ"],
+    hints: [
+      "ファイルは、調査ファイルのページの下部にある「log_all.txt」というリンクから落とせる。",
+      "約180行ある。開いて「声」で検索すると、1行だけ見つかる。",
+      "キーワードは『しろいはな』。"
+    ],
+    rewardTitle: "復元された記録 VIII — 白い花",
+    reward: "膨大な記録データの海。その137番目の行にだけ、声の記録があった。キーワードは『しろいはな』。\nノエルが好きだった、白い花。温室に供えられる花が白いのは、偶然ではない。アルマは覚えている。妹の好きだったものを、一つ残らず。\n忘れていたのは、世界のほうだった。"
+  },
+  {
+    id: "f9", num: "09", title: "対話の鍵", piece: "た", special: "door",
+    riddle: "記録のどこにも載っていない扉がある。入口は、本編の概要（ABOUT）の隅に、ファイル名の姿で残されている。扉の鍵は、FILE 07で手に入れた言葉。扉の向こうで彼女と話し、声の欠片を受け取れ。",
+    answers: [],
+    hints: [
+      "本編ABOUTの関連記録の近くに「unlogged_door.html」という小さな文字がある。",
+      "扉のパスワードは、文書の鍵（FILE 07）の答えそのもの。",
+      "彼女の問いに、彼女の記録どおりに答えること。彼女が好きだったのは、静かな場所と、花。"
+    ],
+    rewardTitle: "復元された記録 IX — 扉の向こうの声",
+    reward: "記録のどこにも載っていない扉。その向こうで、彼女は待っていた。\n『もう、誰も私を見ていない』——そう言った彼女に、あなたは答えた。忘れていない、と。好きだったものを覚えている、と。\n彼女は笑ったかどうか分からない。ただ、声の欠片を置いて、静かに消えた。"
+  },
+  {
+    id: "f10", num: "10", title: "黒塗りの鍵", piece: "ね",
+    riddle: "黒塗りの記録が3つある。1つはこのCASE 2の説明文の中、2つ目は本編の世界（WORLD）の終わり、3つ目は本編の概要（ABOUT）の終わり。黒塗りを押して開き、隠れた文字を FRAGMENT → WORLD → ABOUT の順に並べよ。",
+    answers: ["とびら", "トビラ"],
+    hints: [
+      "黒塗りはクリック（タップ）で開く。まず、このページのCASE 2の説明文の中を探して。",
+      "本編のWORLDとABOUTの一番下のほうにも、同じ黒塗りがある。",
+      "並べると——と・び・ら。"
+    ],
+    rewardTitle: "復元された記録 X — 黒塗りの意味",
+    reward: "黒塗りは、隠すためのものではなかった。守るためのものだった。\n大切な言葉ほど、世界は簡単に踏みにじる。だから3つに分けて、別々の場所に眠らせた。集めた者だけが、その名を呼べるように。\n『とびら』。声の欠片と、その名を呼ぶ資格を、あなたは手に入れた。"
+  }
+];
+var FINAL2_ANSWERS = ["あえたね", "アエタネ"];
+var solved2 = new Set(JSON.parse(localStorage.getItem("fragment3-solved") || "[]"));
+var hintState2 = JSON.parse(localStorage.getItem("fragment3-hints") || "{}");
+var final2Solved = localStorage.getItem("fragment3-final") === "1";
+function saveState2() {
+  localStorage.setItem("fragment3-solved", JSON.stringify([...solved2]));
+  localStorage.setItem("fragment3-hints", JSON.stringify(hintState2));
+  localStorage.setItem("fragment3-final", final2Solved ? "1" : "0");
+}
+function renderCase2() {
+  const list = $("#fileList2");
+  if (!list) return;
+  list.innerHTML = "";
+  FILES2.forEach((file) => {
+    const solved = solved2.has(file.id);
+    const card = document.createElement("article");
+    card.className = "file-card" + (solved ? " is-solved" : "");
+    const hintsShown = hintState2[file.id] || 0;
+    let inner = `
+      <div class="file-head">
+        <span class="file-tag">FILE ${file.num}</span>
+        <h3 class="file-title">${file.title}</h3>
+        <span class="file-status">${solved ? `SOLVED — 導出文字「${file.piece}」` : "未解決"}</span>
+      </div>
+      <p class="file-riddle">${file.riddle}</p>`;
+    if (solved) {
+      inner += `<div class="reward"><p class="reward-tag">STORY RESTORED</p><h4>${file.rewardTitle}</h4><p class="reward-body">${file.reward}</p></div>`;
+    } else {
+      inner += `<div class="hint-area">`;
+      for (let i = 0; i < hintsShown; i++) inner += `<p class="hint-line">ヒント${i + 1}：${file.hints[i]}</p>`;
+      inner += `</div>
+      <div class="file-actions">
+        ${hintsShown < file.hints.length ? `<button class="ghost-button" data-hint2="${file.id}" type="button">ヒントを見る（${hintsShown} / ${file.hints.length}）</button>` : ""}
+      </div>`;
+      if (file.special === "door") {
+        inner += `<div class="file-actions"><button class="ghost-button" data-doorcheck="${file.id}" type="button">扉の記録を確認する</button></div>
+        <p class="gate-msg" data-msg2="${file.id}"></p>`;
+      } else {
+        inner += `<div class="gate-form">
+          <input type="text" placeholder="答えを入力" autocomplete="off" spellcheck="false" data-input2="${file.id}">
+          <button type="button" data-solve2="${file.id}">判定</button>
+        </div>
+        <p class="gate-msg" data-msg2="${file.id}"></p>`;
+      }
+    }
+    card.innerHTML = inner;
+    list.appendChild(card);
+  });
+  list.querySelectorAll("[data-hint2]").forEach((btn) => btn.addEventListener("click", () => {
+    const id = btn.getAttribute("data-hint2");
+    hintState2[id] = Math.min((hintState2[id] || 0) + 1, 3);
+    saveState2(); renderCase2();
+  }));
+  list.querySelectorAll("[data-solve2]").forEach((btn) => btn.addEventListener("click", () => trySolve2(btn.getAttribute("data-solve2"))));
+  list.querySelectorAll("[data-input2]").forEach((inp) => inp.addEventListener("keydown", (e) => { if (e.key === "Enter") trySolve2(inp.getAttribute("data-input2")); }));
+  list.querySelectorAll("[data-doorcheck]").forEach((btn) => btn.addEventListener("click", () => {
+    if (localStorage.getItem("fragment2-door") === "1") {
+      solved2.add("f9"); saveState2();
+      document.body.classList.add("eroding");
+      window.setTimeout(() => document.body.classList.remove("eroding"), 240);
+      renderCase2(); updateCount();
+    } else {
+      const msg = document.querySelector('[data-msg2="f9"]');
+      if (msg) msg.textContent = "まだ、彼女の声は届いていない。扉は、本編のABOUTの隅にある。";
+    }
+  }));
+  renderFinal2();
+  updateCount();
+}
+function trySolve2(id) {
+  const file = FILES2.find((f) => f.id === id);
+  const input = document.querySelector(`[data-input2="${id}"]`);
+  const msg = document.querySelector(`[data-msg2="${id}"]`);
+  if (!file || !input) return;
+  const v = normalize(input.value);
+  const ok = file.answers.some((a) => normalize(a) === v);
+  if (ok) {
+    solved2.add(id);
+    saveState2();
+    document.body.classList.add("eroding");
+    window.setTimeout(() => document.body.classList.remove("eroding"), 240);
+    renderCase2();
+  } else if (msg) {
+    msg.textContent = "違うようだ。手がかりを、もう一度確かめて。";
+  }
+}
+function renderFinal2() {
+  const slots = $("#pieceSlots2");
+  if (!slots) return;
+  slots.innerHTML = "";
+  FILES2.forEach((file) => {
+    const span = document.createElement("span");
+    span.className = "piece-slot" + (solved2.has(file.id) ? " is-got" : "");
+    span.textContent = solved2.has(file.id) ? file.piece : "？";
+    slots.appendChild(span);
+  });
+  $("#finalForm2").style.display = final2Solved ? "none" : "";
+  $("#finalMsg2").textContent = final2Solved ? "もう一つの鍵は、もう開かれている。" : "";
+  $("#replayEnding2").hidden = !final2Solved;
+}
+function tryFinal2() {
+  const v = normalize($("#finalInput2").value);
+  const ok = FINAL2_ANSWERS.some((a) => normalize(a) === v);
+  if (ok) {
+    final2Solved = true; saveState2(); renderFinal2();
+    playEnding2();
+  } else {
+    $("#finalMsg2").textContent = "鍵が違う。集めた文字を、順に並べて。";
+  }
+}
+function playEnding2() {
+  const overlay = $("#endingOverlay2");
+  if (!overlay) return;
+  overlay.hidden = false;
+  overlay.classList.remove("playing");
+  void overlay.offsetWidth;
+  overlay.classList.add("playing");
+}
+function resetCase2() {
+  solved2.clear();
+  Object.keys(hintState2).forEach((k) => delete hintState2[k]);
+  final2Solved = false;
+  localStorage.removeItem("fragment2-door");
+  saveState2();
+}
+var fb2 = $("#finalButton2");
+if (fb2) fb2.addEventListener("click", tryFinal2);
+var fi2 = $("#finalInput2");
+if (fi2) fi2.addEventListener("keydown", (e) => { if (e.key === "Enter") tryFinal2(); });
+var ec2 = $("#endingClose2");
+if (ec2) ec2.addEventListener("click", () => {
+  const overlay = $("#endingOverlay2");
+  overlay.hidden = true; overlay.classList.remove("playing");
+});
+var re2 = $("#replayEnding2");
+if (re2) re2.addEventListener("click", playEnding2);
+
+/* ===== redactions ===== */
+document.querySelectorAll("[data-redact]").forEach((el) => {
+  el.addEventListener("click", () => el.classList.add("open"));
+});
+
+renderCase2();
 updateCount();

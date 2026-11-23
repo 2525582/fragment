@@ -161,3 +161,10 @@ main{position:relative;z-index:2;padding:96px 20px 40px;max-width:980px;margin:0
 .piece-slot.is-got{border-color:rgba(184,205,235,.55);color:var(--pale);box-shadow:0 0 14px rgba(184,205,235,.12)}
 .final-desc{font-size:12.5px;line-height:1.95;color:#c9ccd6}
 .sealed-replay{margin-top:14px;background:transparent;border:1px solid rgba(184,205,235,.4);color:var(--pale);font:600 10px var(--mono);letter-spacing:.2em;padding:13px 20px;cursor:pointer}
+
+/* ===== case 2 (v3) ===== */
+.case2-heading{margin-top:56px}
+.redact{background:#000;color:transparent;border:1px solid rgba(255,255,255,.28);padding:0 12px;cursor:pointer;user-select:none;font-family:var(--mono)}
+.redact.open{background:rgba(184,205,235,.12);color:var(--pale);border-color:rgba(184,205,235,.5)}
+.file-link{opacity:.55;font-size:9px !important}
+.file-link:hover{opacity:1}
